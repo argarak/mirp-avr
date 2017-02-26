@@ -11,6 +11,6 @@
 #include "src/debug/stdmsg.h"
 #include "src/constants/msg.h"
 #include "src/constants/command.h"
-#include "src/comm/serial.h"
+#include "src/comm/uart/uart.h"
 
 #endif

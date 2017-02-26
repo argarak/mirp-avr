@@ -4,7 +4,8 @@
 /*
  * Initialises the standard messaging debug system
  */
-bool StdMsg::Init() {
+bool StdMsg::Init(uint16_t baud) {
+  UART::Init(baud);
   return true;
 }
 

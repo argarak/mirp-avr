@@ -1,7 +1,7 @@
 F_CPU=16000000UL
 BOARD=atmega328p
 FILE=mirp
-BAUDRATE=115200
+BAUDRATE=19200
 ACMPORT=/dev/ttyACM0
 AVRDUDE_CONF=/etc/avrdude.conf
 BUILD_DIR=build/
@@ -19,7 +19,7 @@ TARGET=mirp
 all: $(TARGET) link hex
 
 $(TARGET): $(OBJECTS) $(HEADERS)
-	avr-g++ -g -Os -mmcu=$(BOARD) -c $^
+	avr-g++ -DF_CPU=16000000UL -g -Os -mmcu=$(BOARD) -c $^
 
 link:
 	avr-g++ -g -mmcu=$(BOARD) -o $(TARGET).elf *.o

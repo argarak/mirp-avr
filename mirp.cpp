@@ -1,11 +1,11 @@
 #include "mirp.h"
 
 int main(void) {
-  StdMsg::Init();
+  StdMsg::Init(BAUD);
 
-  // Check if communication is avaliable
-  if(Serial::IsAvaliable()) {
-    if(StdMsg::CommandCompare(Serial::SendCommand(ASK_NETWORK_TYPE),
+  // Check if uart communication is avaliable
+  if(UART::IsAvailable()) {
+    if(StdMsg::CommandCompare(UART::SendCommand(ASK_NETWORK_TYPE),
                               CLIENT_TYPE)) {
       // initialise client_mode
     } else {
@@ -16,4 +16,15 @@ int main(void) {
     // Not connected
     StdMsg::SendWarning(MSG_NOT_CONNECTED);
   }
+
+  while(1) {
+    uint8_t b = UART::GetChar();
+    if(b >= 'A' && b <= 'Z') {
+      b ^= 0x20;
+    }
+    PORTC = ~b;
+    UART::PutChar(b);
+  }
+
+  return 0;
 }

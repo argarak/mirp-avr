@@ -10,6 +10,6 @@ namespace StdMsg {
   bool Init(uint16_t baud);
   bool SendWarning(msg warning);
   bool CommandCompare(command a, command b);
-};
+}
 
 #endif

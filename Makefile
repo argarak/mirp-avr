@@ -8,7 +8,7 @@ BUILD_DIR=build/
 
 LD=avr-ld
 CC=avr-gcc
-CFLAGS=-g -mmcu=$(BOARD)
+CFLAGS=-ggdb -mmcu=$(BOARD) -pedantic -DF_CPU=16000000UL
 
 SOURCES=$(shell find . -name "*.cpp" -o -name "*.c")
 OBJECTS=$(SOURCES:.c=.o)
@@ -19,10 +19,10 @@ TARGET=mirp
 all: $(TARGET) link hex
 
 $(TARGET): $(OBJECTS) $(HEADERS)
-	avr-g++ -DF_CPU=16000000UL -g -Os -mmcu=$(BOARD) -c $^
+	avr-g++ $(CFLAGS) -Os -mmcu=$(BOARD) -c $^
 
 link:
-	avr-g++ -g -mmcu=$(BOARD) -o $(TARGET).elf *.o
+	avr-g++ $(CFLAGS) -o $(TARGET).elf *.o
 
 hex:
 	avr-objcopy -j .text -j .data -O ihex $(TARGET).elf $(TARGET).hex

@@ -16,18 +16,24 @@ void UART::Init(uint16_t baud) {
 }
 
 bool UART::IsAvailable() {
-  if((UCSR0A & _BV(TXC0)) == 0)
-    return false;
+  if((UCSR0A & _BV(UDRE0)) == 0)
+   return false;
   return true;
 }
 
-bool UART::PutChar(byte data) {
+// TODO Optimise this function
+size_t strlen(const char* str) {
+  size_t len;
+  for(len = 0; str[len]; len++);
+  return len;
+}
+
+bool UART::Print(const char* data) {
   while(!UART::IsAvailable())
     ;
-
-  UDR0 = data;
-
-  _delay_ms(100);
+  for(int i = 0; i < strlen(data); i++) {
+    UDR0 = data[i];
+  }
 
   return true;
 }
@@ -45,11 +51,11 @@ uint8_t UART::GetChar() {
 }
 
 command UART::SendCommand(command c) {
-  UART::PutChar(c.type[0]);
-  UART::PutChar(c.type[1]);
-  UART::PutChar(c.msg);
+  // UART::PutChar(c.type[0]);
+  // UART::PutChar(c.type[1]);
+  // UART::PutChar(c.msg);
 
   uint8_t input = UART::GetChar();
 
-  return (command){{0x2e, 0x2e}, 0x01};
+  return command{{0x2e, 0x2e}, 0x01};
 }

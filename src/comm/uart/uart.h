@@ -7,13 +7,14 @@
 //#include <util/setbaud.h>
 #include <util/delay.h>
 
-#define BAUD 115200
+// Make sure it's not over 65535!
+#define BAUD 57600
 #define BAUDRATE ((F_CPU)/(BAUD*16UL)-1)
 
 namespace UART {
   void Init(uint16_t baud);
   bool IsAvailable();
-  bool PutChar(byte data);
+  bool Print(const char* data);
   uint8_t GetChar();
   command SendCommand(command c);
 }

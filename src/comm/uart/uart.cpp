@@ -7,35 +7,47 @@
 
 #include "uart.h"
 
-void UART::Init(uint16_t baud) {
+void UART::Init() {
+#define BAUD 9600
+#include <util/setbaud.h>
+  UBRR0 = UBRRH_VALUE;
+  UBRR0 = UBRRL_VALUE;
+#if USE_2X
+  UCSR0A |= (1 << U2X0);
+#else
+  UCSR0A &= ~(1 << U2X0);
+#endif
+
   DDRD |= _BV(1);
-  UBRR0 = baud;
   UCSR0C = _BV(UCSZ01) | _BV(UCSZ00);
-  UCSR0A = 0;
   UCSR0B = _BV(RXEN0) | _BV(TXEN0);
 }
 
 bool UART::IsAvailable() {
   if((UCSR0A & _BV(UDRE0)) == 0)
-   return false;
+    return false;
   return true;
 }
 
 // TODO Optimise this function
-size_t strlen(const char* str) {
-  size_t len;
+uint16_t strlen(const char* str) {
+  uint16_t len;
   for(len = 0; str[len]; len++);
   return len;
 }
 
-bool UART::Print(const char* data) {
-  while(!UART::IsAvailable())
-    ;
+void UART::Print(const char* data) {
   for(int i = 0; i < strlen(data); i++) {
+    while(!UART::IsAvailable())
+      ;
     UDR0 = data[i];
   }
+}
 
-  return true;
+void UART::PutChar(unsigned char data) {
+  while(!UART::IsAvailable())
+    ;
+  UDR0 = data;
 }
 
 uint8_t UART::GetChar() {
@@ -51,11 +63,12 @@ uint8_t UART::GetChar() {
 }
 
 command UART::SendCommand(command c) {
-  // UART::PutChar(c.type[0]);
-  // UART::PutChar(c.type[1]);
-  // UART::PutChar(c.msg);
+  UART::PutChar(c.type[0]);
+  UART::PutChar(c.type[1]);
+  UART::PutChar(c.msg);
+  UART::PutChar('\n');
 
-  uint8_t input = UART::GetChar();
+  //uint8_t input = UART::GetChar();
 
   return command{{0x2e, 0x2e}, 0x01};
 }

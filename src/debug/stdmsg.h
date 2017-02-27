@@ -7,7 +7,7 @@
 namespace StdMsg {
   extern byte msgtype;
 
-  bool Init(uint16_t baud);
+  bool Init();
   bool SendWarning(msg warning);
   bool CommandCompare(command a, command b);
 }

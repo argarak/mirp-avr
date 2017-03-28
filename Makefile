@@ -22,13 +22,13 @@ $(TARGET): $(OBJECTS) $(HEADERS)
 	avr-g++ $(CFLAGS) -Os -mmcu=$(BOARD) -c $^
 
 link:
-	avr-g++ $(CFLAGS) -o $(TARGET).elf *.o
+	avr-g++ $(CFLAGS) -o "$(BUILD_DIR)$(TARGET).elf" $(BUILD_DIR)*.o
 
 hex:
-	avr-objcopy -j .text -j .data -O ihex $(TARGET).elf $(TARGET).hex
+	avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)$(TARGET).elf $(TARGET).hex
 
 upload:
 	avrdude -v -p $(BOARD) -C $(AVRDUDE_CONF) -c arduino -b $(BAUDRATE) -P $(ACMPORT) -D -U flash:w:./$(FILE).hex:i
 
 clean:
-	rm *.o *.elf *.hex $(shell find . -name "*.gch")
+	rm build/* *.hex $(shell find . -name "*.gch")

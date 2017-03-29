@@ -51,9 +51,7 @@ void UART::PutChar(unsigned char data) {
 }
 
 uint8_t UART::GetChar() {
-  while(!UART::IsAvailable())
-    ;
-
+  loop_until_bit_is_set(UCSR0A, RXC0);
   if(UDR0 != '\0')
     return UDR0;
 }
@@ -99,7 +97,7 @@ char* UART::ReadString() {
     do {
       b = UART::GetChar();
 
-      if(b >= 0 && b != ' ')
+      if(b >= 0)
         break;
 
     } while(1);
@@ -112,9 +110,9 @@ char* UART::ReadString() {
       currsize += 1;
       buf = (char*)realloc(buf, currsize);
     }
-
-    _delay_ms(1);
   } while(b != '\n' && b != '\r' && b != '\0');
+
+  buf[currsize - 1] = '\0';
 
   // remember to free()!
   return buf;

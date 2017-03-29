@@ -18,8 +18,11 @@ TARGET=mirp
 
 all: $(TARGET) link hex
 
-$(TARGET): $(OBJECTS) $(HEADERS)
+routine: clean $(TARGET) link hex upload
+
+$(TARGET): $(SOURCES) $(HEADERS)
 	avr-g++ $(CFLAGS) -Os -mmcu=$(BOARD) -c $^
+	mv *.o build
 
 link:
 	avr-g++ $(CFLAGS) -o "$(BUILD_DIR)$(TARGET).elf" $(BUILD_DIR)*.o

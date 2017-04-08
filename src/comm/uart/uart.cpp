@@ -21,6 +21,8 @@ void UART::Init() {
   DDRD |= _BV(1);
   UCSR0C = _BV(UCSZ01) | _BV(UCSZ00);
   UCSR0B = _BV(RXEN0) | _BV(TXEN0);
+
+  UART::Initialised = true;
 }
 
 bool UART::IsAvailable() {
@@ -102,7 +104,6 @@ char* UART::ReadString() {
 
     } while(1);
 
-
     buf[i] = (char)b;
     i++;
 
@@ -110,6 +111,7 @@ char* UART::ReadString() {
       currsize += 1;
       buf = (char*)realloc(buf, currsize);
     }
+
   } while(b != '\n' && b != '\r' && b != '\0');
 
   buf[currsize - 1] = '\0';

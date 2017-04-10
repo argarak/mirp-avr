@@ -1,8 +1,6 @@
 
 #include "esp.h"
 
-#include "../uart/uart.h"
-
 int ESP8266::SendCommand(const char* command) {
   return 0;
 }

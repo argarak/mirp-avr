@@ -12,5 +12,6 @@
 #include "src/constants/msg.h"
 #include "src/constants/command.h"
 #include "src/comm/uart/uart.h"
+#include "modules/config.h"
 
 #endif

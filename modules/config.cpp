@@ -1,12 +1,13 @@
 
 #include "config.h"
+#include "stack.h"
 
-uint_8 index = 0;
+int index = 0;
 
 void Modules::Init() {
 #if CONF_MISCR
-  Modules::setup_stack[index] = MISCR::setup();
-  Modules::loop_stack[index] = MISCR::loop();
+  ModuleStack::setup_stack[0] = MISCR::setup;
+  ModuleStack::loop_stack[0] = MISCR::loop;
 #endif
 
   index++;
@@ -14,16 +15,18 @@ void Modules::Init() {
 
 void Modules::ExecuteSetup() {
   for(int i = 0; i < index; i++)
-    Modules::setup_stack[i]();
+    (*ModuleStack::setup_stack[i])();
 }
 
 // TODO Add support for sub-modules
 void Modules::ExecuteLoop() {
-  uint_8 curr_loop = 0;
+  uint8_t curr_loop = 0;
 
   // No turning back!
   while(1) {
-    Modules::loop_stack[curr_loop]();
+    (*ModuleStack::loop_stack[curr_loop])();
+
+    curr_loop++;
 
     if(curr_loop == index)
       curr_loop = 0;

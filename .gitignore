@@ -1,5 +1,6 @@
 # Build directories
 build/
+modules/mod*
 
 # Object files
 *.o

@@ -1,6 +1,7 @@
-
 #ifndef H_MODULE_CONFIG_
 #define H_MODULE_CONFIG_
+
+#include <avr/io.h>
 
 #define SINGULAR_MODULE_LOADED false
 
@@ -18,13 +19,10 @@
   #undef MISCR_SINGULAR_MODULE
 #endif
 
-#endif
-
-namespace Module {
-  void (*setup_stack[256])(void);
-  void (*loop_stack[256])(void);
-
+namespace Modules {
   void Init();
   void ExecuteSetup();
   void ExecuteLoop();
 }
+
+#endif

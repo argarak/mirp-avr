@@ -21,14 +21,9 @@ int main(void) {
 
   // UART::Print("abc\n");
 
-  while(1) {
-    char* b = UART::ReadString();
-
-    if(b[0] != '\0')
-      UART::Print(b);
-
-    free(b);
-  }
+  Modules::Init();
+  Modules::ExecuteSetup();
+  Modules::ExecuteLoop();
 
   return 0;
 }

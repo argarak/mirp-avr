@@ -1,3 +1,6 @@
+#ifndef _H_UART
+#define _H_UART
+
 #include "../../constants/datatypes.h"
 
 #include <avr/io.h>
@@ -6,8 +9,6 @@
 #include <stdlib.h>
 
 namespace UART {
-  bool Initialised = false;
-
   void Init();
   bool IsAvailable();
   void Print(const char* data);
@@ -16,3 +17,5 @@ namespace UART {
   char* ReadString();
   command SendCommand(command c);
 }
+
+#endif

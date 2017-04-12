@@ -30,14 +30,14 @@ bool UART::IsAvailable() {
 }
 
 // TODO Optimise this function
-uint16_t strlen(const char* str) {
+uint16_t UART::Strlen(const char* str) {
   uint16_t len;
   for(len = 0; str[len]; len++);
   return len;
 }
 
 void UART::Print(const char* data) {
-  for(int i = 0; i < strlen(data); i++) {
+  for(int i = 0; i < UART::Strlen(data); i++) {
     while(!UART::IsAvailable())
       ;
     UDR0 = data[i];
@@ -78,7 +78,7 @@ command UART::SendCommand(command c) {
   UART::PutChar(buffer[1]);
   UART::PutChar(buffer[2]);
 
-  if(strlen((const char*)buffer) == 3)
+  if(UART::Strlen((const char*)buffer) == 3)
     return command{{buffer[0], buffer[1]}, buffer[3]};
   else
     return command{{0, 0}, 0};
@@ -105,7 +105,7 @@ char* UART::ReadString() {
     buf[i] = (char)b;
     i++;
 
-    if(strlen(buf) >= (unsigned long)currsize) {
+    if(UART::Strlen(buf) >= (unsigned long)currsize) {
       currsize += 1;
       buf = (char*)realloc(buf, currsize);
     }

@@ -11,6 +11,7 @@
 namespace UART {
   void Init();
   bool IsAvailable();
+  uint16_t Strlen(const char* str);
   void Print(const char* data);
   void PutChar(unsigned char data);
   uint8_t GetChar();

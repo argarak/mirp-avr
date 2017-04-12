@@ -8,7 +8,7 @@ BUILD_DIR=build/
 
 LD=avr-ld
 CC=avr-gcc
-CFLAGS=-ggdb -mmcu=$(BOARD) -pedantic -DF_CPU=16000000UL
+CFLAGS=-ggdb -mmcu=$(BOARD) -pedantic -DF_CPU=16000000UL -Os -mcall-prologues
 
 SOURCES=$(shell find . -name "*.cpp" -o -name "*.c")
 OBJECTS=$(SOURCES:.c=.o)
@@ -21,7 +21,7 @@ all: $(TARGET) link hex
 routine: clean $(TARGET) link hex upload
 
 $(TARGET): $(SOURCES) $(HEADERS)
-	avr-g++ $(CFLAGS) -Os -mmcu=$(BOARD) -c $^
+	avr-g++ $(CFLAGS) -mmcu=$(BOARD) -c $^
 	mv *.o build
 
 link:
@@ -34,4 +34,4 @@ upload:
 	avrdude -v -p $(BOARD) -C $(AVRDUDE_CONF) -c arduino -b $(BAUDRATE) -P $(ACMPORT) -D -U flash:w:./$(FILE).hex:i
 
 clean:
-	rm build/* *.hex $(shell find . -name "*.gch")
+	rm -f build/* *.hex $(shell find . -name "*.gch")

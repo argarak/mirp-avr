@@ -8,6 +8,7 @@
 // AVR libraries
 #include <avr/io.h>
 
+#include "src/macros.h"
 #include "src/debug/stdmsg.h"
 #include "src/constants/msg.h"
 #include "src/constants/command.h"

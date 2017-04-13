@@ -1,5 +1,5 @@
 F_CPU=16000000UL
-BOARD=atmega328p
+BOARD=atmega2560
 FILE=mirp
 BAUDRATE=115200
 ACMPORT=/dev/ttyACM0
@@ -31,7 +31,7 @@ hex:
 	avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)$(TARGET).elf $(TARGET).hex
 
 upload:
-	avrdude -v -p $(BOARD) -C $(AVRDUDE_CONF) -c arduino -b $(BAUDRATE) -P $(ACMPORT) -D -U flash:w:./$(FILE).hex:i
+	avrdude -v -p m2560 -C $(AVRDUDE_CONF) -c wiring -b $(BAUDRATE) -P $(ACMPORT) -D -U flash:w:./$(FILE).hex:i
 
 clean:
 	rm -f build/* *.hex $(shell find . -name "*.gch")

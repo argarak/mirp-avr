@@ -1,4 +1,7 @@
 
+#ifndef _H_MACROS
+#define _H_MACROS
+
 #include <avr/io.h>
 
 // I/O Access
@@ -41,3 +44,5 @@ void inline io_mode_output(volatile uint8_t* portd, uint16_t pind) {
 void inline io_mode_input(volatile uint8_t* portd, uint16_t pind) {
   *(portd) &= ~_BV(pind);
 }
+
+#endif

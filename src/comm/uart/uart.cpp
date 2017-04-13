@@ -85,13 +85,9 @@ command UART::SendCommand(command c) {
 }
 
 char* UART::ReadString() {
-  int currsize = 25;
-  char* buf = (char*)malloc(currsize);
-  unsigned int i = 0;
-  char b;
-
-  for(unsigned int a = 0; a < currsize; a++)
-    buf[a] = '\0';
+  char* buf = (char*)malloc(255);
+  uint8_t i = 0;
+  char b = '\0';
 
   do {
     do {
@@ -102,17 +98,12 @@ char* UART::ReadString() {
 
     } while(1);
 
-    buf[i] = (char)b;
+    buf[i] = b;
     i++;
-
-    if(UART::Strlen(buf) >= (unsigned long)currsize) {
-      currsize += 1;
-      buf = (char*)realloc(buf, currsize);
-    }
 
   } while(b != '\n' && b != '\r' && b != '\0');
 
-  buf[currsize - 1] = '\0';
+  buf[i] = '\0';
 
   // remember to free()!
   return buf;

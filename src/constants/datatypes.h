@@ -21,10 +21,10 @@ extern struct msg_struct {
 typedef struct msg_struct msg;
 
 extern struct gpio_t_struct {
-  uint8_t ddr;
-  uint8_t pin;
-  uint8_t port;
-  uint8_t portd;
+  volatile uint8_t ddr;
+  volatile uint8_t pin;
+  volatile uint8_t* port;
+  volatile uint8_t* portd;
 } gpio_t_struct;
 
 typedef struct gpio_t_struct gpio_t;

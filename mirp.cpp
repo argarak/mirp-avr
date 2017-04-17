@@ -1,6 +1,8 @@
 #include "mirp.h"
 
 int main(void) {
+  sei(); // Enable interrupts
+
   StdMsg::Init();
 
   // Check if uart communication is avaliable

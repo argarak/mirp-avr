@@ -8,7 +8,7 @@
 #include "uart.h"
 
 void UART::Init() {
-#define BAUD 9600
+#define BAUD 19200
 #include <util/setbaud.h>
   UBRR0 = UBRRH_VALUE;
   UBRR0 = UBRRL_VALUE;
@@ -51,9 +51,10 @@ void UART::PutChar(unsigned char data) {
 }
 
 uint8_t UART::GetChar() {
-  loop_until_bit_is_set(UCSR0A, RXC0);
-  if(UDR0 != '\0')
-    return UDR0;
+  //loop_until_bit_is_set(UCSR0A, RXC0);
+  while(!(UCSR0A & (1 << RXC0)))
+    ;
+  return UDR0;
 }
 
 command UART::SendCommand(command c) {
@@ -86,15 +87,16 @@ command UART::SendCommand(command c) {
 
 char* UART::ReadString() {
   char* buf = (char*)malloc(255);
+
+  buf[0] = '\0';
+
   uint8_t i = 0;
   char b = '\0';
 
   do {
     do {
       b = UART::GetChar();
-
-      if(b >= 0)
-        break;
+      break;
 
     } while(1);
 

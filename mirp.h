@@ -7,6 +7,7 @@
 
 // AVR libraries
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "src/macros.h"
 #include "src/debug/stdmsg.h"

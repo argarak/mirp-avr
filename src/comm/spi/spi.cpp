@@ -18,7 +18,7 @@ bool SPI::SendComplete() {
   return SPSR & (1 << SPIF);
 }
 
-void SPI::Send(char d) {
+void SPI::Send(uint8_t d) {
   // Send byte
   SPDR = d;
 

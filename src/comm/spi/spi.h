@@ -8,5 +8,5 @@
 namespace SPI {
   void Init();
   bool SendComplete();
-  void Send(char d);
+  void Send(uint8_t d);
 }

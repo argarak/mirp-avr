@@ -7,10 +7,12 @@ AVRDUDE_CONF=/etc/avrdude.conf
 BUILD_DIR=build/
 
 LD=avr-ld
+CXX=avr-g++
 CC=avr-gcc
-CFLAGS=-ggdb -mmcu=$(BOARD) -pedantic -DF_CPU=16000000UL -Os -mcall-prologues
+CFLAGS=-fdata-sections -ffunction-sections -mmcu=$(BOARD) -pedantic -DF_CPU=16000000UL -Os -mcall-prologues
 
-SOURCES=$(shell find . -name "*.cpp" -o -name "*.c")
+CXXSOURCES=$(shell find . -name "*.cpp")
+CSOURCES=$(shell find . -name "*.c")
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(shell find . -name "*.h")
 
@@ -20,12 +22,13 @@ all: $(TARGET) link hex
 
 routine: clean $(TARGET) link hex upload
 
-$(TARGET): $(SOURCES) $(HEADERS)
-	avr-g++ $(CFLAGS) -mmcu=$(BOARD) -c $^
+$(TARGET): $(HEADERS)
+	$(CC) $(CFLAGS) -mmcu=$(BOARD) -c $(CSOURCES)
+	$(CXX) $(CFLAGS) -mmcu=$(BOARD) -c $(CXXSOURCES) $(HEADERS)
 	mv *.o build
 
 link:
-	avr-g++ $(CFLAGS) -o "$(BUILD_DIR)$(TARGET).elf" $(BUILD_DIR)*.o
+	$(CXX) $(CFLAGS) -Wl,--gc-sections -o "$(BUILD_DIR)$(TARGET).elf" $(BUILD_DIR)*.o
 
 hex:
 	avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)$(TARGET).elf $(TARGET).hex

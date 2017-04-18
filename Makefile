@@ -2,7 +2,7 @@ F_CPU=16000000UL
 BOARD=atmega2560
 FILE=mirp
 BAUDRATE=115200
-ACMPORT=/dev/ttyACM0
+ACMPORT=/dev/ttyACM1
 AVRDUDE_CONF=/etc/avrdude.conf
 BUILD_DIR=build/
 
